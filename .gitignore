@@ -1,0 +1,12 @@
+*.iml
+.gradle/
+/local.properties
+/.idea/
+.DS_Store
+/build
+/app/build
+/captures
+.externalNativeBuild
+.cxx/
+# Model is downloaded at build time, not committed.
+/app/src/main/assets/*.tflite

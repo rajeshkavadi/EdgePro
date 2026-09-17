@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">EdgePro</string>
+    <!-- fps, inference ms, detection count -->
+    <string name="hud_fmt">%1$.1f fps | %2$d ms | %3$d obj</string>
+</resources>
