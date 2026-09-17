@@ -9,6 +9,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write   # needed to create/update the Release
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -36,9 +38,25 @@ jobs:
       - name: Build debug APK
         run: ./gradlew assembleDebug --no-daemon --stacktrace
 
-      - name: Upload debug APK
+      - name: Upload debug APK (workflow artifact)
         uses: actions/upload-artifact@v4
         with:
           name: edgepro-debug-apk
           path: app/build/outputs/apk/debug/*.apk
           if-no-files-found: error
+
+      - name: Publish debug APK to Release (stable link)
+        if: github.event_name != 'pull_request'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: debug-latest
+          name: EdgePro debug (latest)
+          prerelease: true
+          fail_on_unmatched_files: true
+          body: |
+            Auto-built **debug** APK from CI (branch ${{ github.ref_name }}, commit ${{ github.sha }}).
+
+            - Unsigned for Play Store; debug build for sideloading/testing only.
+            - Install: `adb install app-debug.apk`
+            - This release moves to the latest build each push; do not treat as a stable version.
+          files: app/build/outputs/apk/debug/*.apk
