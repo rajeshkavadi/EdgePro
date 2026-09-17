@@ -21,6 +21,10 @@ jobs:
 
       - name: Set up Android SDK
         uses: android-actions/setup-android@v3
+        with:
+          # Skip the action's default `sdkmanager tools` install: the `tools`
+          # package was removed from the SDK and its absence fails the step.
+          packages: ""
 
       - name: Install required SDK packages
         run: |
